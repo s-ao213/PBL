@@ -17,21 +17,74 @@
             <div class="form-group">
                 <label for="student-id">学籍番号</label>
                 <input type="text" id="student-id" name="student-id" required>
+                <span id="student-id-error" style="color: red; display: none;"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="grade">学年</label>
+                <select id="grade">
+                    <option value="">選択してください</option>
+                    <option value="1">1年</option>
+                    <option value="2">2年</option>
+                    <option value="3">3年</option>
+                    <option value="4">4年</option>
+                    <option value="5">5年</option>
+                    <option value="6">専攻科1年</option>
+                    <option value="7">専攻科2年</option>
+                    <option value="8">教職員</option>
+                </select>
+                
+                <label for="class">クラスまたはコース</label>
+                <select id="class">
+                    <option value="">選択してください</option>
+                    <option value="A">1組</option>
+                    <option value="B">2組</option>
+                    <option value="C">3組</option>
+                    <option value="D">4組</option>
+                    <option value="E">知能情報コース</option>
+                    <option value="F">エネルギー機械コース</option>
+                    <option value="G">プロダクトデザインコース</option>
+                    <option value="H">エレクトロニクスコース</option>
+                    <option value="I">機械システムコース</option>
+                    <option value="J">メカトロニクスコース</option>
+                    <option value="K">環境物質化学コース</option>
+                    <option value="L">都市環境コース</option>
+                    <option value="M">教職員</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="password">パスワード</label>
+                <input type="password" id="password" name="password" required>
+                <div id="password-error" class="error-message" style="display: none; color: red;">半角英数字のみ、8文字以上16文字以下、英語数字両方を含めてください。</div>
             </div>
             <div class="form-group">
-                <label for="grade-class">学年クラス</label>
-                <input type="text" id="grade-class" name="grade-class" required>
+                <label for="confirm-password">パスワード確認</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+                <div id="confirm-password-error" class="error-message" style="display: none; color: red;">パスワードが一致しません。</div>
             </div>
+
             <div class="form-group">
                 <label for="phone">電話番号</label>
                 <input type="tel" id="phone" name="phone" required>
+                <span id="phone-error" style="color: red; display: none;"></span>
             </div>
+
             <div class="form-group">
                 <label for="email">メールアドレス</label>
                 <input type="email" id="email" name="email" required>
+                <span id="email-error" style="color: red; display: none;"></span>
             </div>
+            <br>
+            <div id="global-error" style="color: red; display: none; text-align: center;">すべて入力してください</div>
             <button type="button" id="submit-btn" disabled>登録</button>
         </form>
+
+        <div id="home-screen" style="display: none;">
+            <h1>登録完了しました。</h1>
+            <p>ホームに戻るには、下のリンクをクリックしてください。</p>
+            <a href="" id="home-link">ホームに戻る</a>
+        </div>
     </div>
     <script src="register.js"></script>
 </body>
