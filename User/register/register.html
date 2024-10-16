@@ -3,11 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新規会員登録</title>
-    <h1>新規会員登録</h1>
-    <p>後で作成</p>
+    <link rel="stylesheet" href="register.css">
+    <title>会員登録フォーム</title>
 </head>
 <body>
-    
+    <div class="container">
+        <h1>会員登録</h1>
+        <form id="registration-form">
+            <div class="form-group">
+                <label for="name">名前</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="student-id">学籍番号</label>
+                <input type="text" id="student-id" name="student-id" required>
+            </div>
+            <div class="form-group">
+                <label for="grade-class">学年クラス</label>
+                <input type="text" id="grade-class" name="grade-class" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">電話番号</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="email">メールアドレス</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <button type="button" id="submit-btn" disabled>登録</button>
+        </form>
+    </div>
+    <script src="register.js"></script>
 </body>
 </html>
