@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログインと注文画面</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <div class="login-container" id="login-container">
+            <h2>ログイン</h2>
+            <form id="login-form">
+                <div>
+                    <label for="student-id">学籍番号:</label>
+                    <input type="text" id="student-id" required>
+                </div>
+                <div>
+                    <label for="password">パスワード:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit">ログイン</button>
+
+                <div class="links-container">
+                    <a href="other/forgot-password.html" class="link">パスワードを忘れた場合</a>
+                    <span> | </span>
+                    <a href="register/register.html" class="link">新規登録</a>
+                </div>
+            </form>
+            <p id="error-message" class="error-message"></p>
+            <div id="businessHours" class="business-hours"></div>
+        </div>
+
+        <div class="order-container" id="order-page" style="display: none;">
+            <h1>注文画面</h1>
+            
+            <div id="buttonContainer">
+                <button id="openPopup1">
+                    <img src="牛丼.jpg" alt="牛丼サンプル" width="40%" height="auto">
+                    <br>
+                    <h4>￥430</h4>
+                </button>
+                
+                <button id="openPopup2">
+                    <img src="パスタ.jpg" alt="パスタサンプル" width="40%" height="auto">
+                    <br>
+                    <h4>￥480</h4>
+                </button>
+            
+                <button id="openPopup3">
+                    <img src="ポテト.jpg" alt="ポテトサンプル" width="40%" height="auto">
+                    <br>
+                    <h4>￥400</h4>
+                </button>
+            </div>
+            
+            <div id="overlay"></div>
+            <div id="popup" style="display: none;">
+                <img src="牛丼.jpg" alt="ポップアップ画像" id="popupImage"> 
+                <h3 id="popupTitle">牛丼</h3> 
+                <p id="string1">￥430</p> 
+                <p id="text1">これは牛丼でアレルギー品目は<a href="">アレルギーリストを見て</a></p> 
+                <button id="add">追加</button>
+                <br>
+                <button id="closePopup">戻る</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
