@@ -1,0 +1,259 @@
+/* 全体設定 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 0;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+/* ログイン画面 */
+.login-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 100%; /* 最大幅を100%に設定 */
+    width: 300px; /* 基本的な幅を設定 */
+    margin: auto; /* 中央配置 */
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* 営業時間表示 */
+.business-hours {
+    margin-top: 15px;
+    font-size: 1.2em; /* フォントサイズ */
+}
+
+.open {
+    color: blue; /* 営業中の色 */
+}
+
+.closed {
+    color: red; /* 営業外の色 */
+}
+
+/* ポップアップ */
+#popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    margin: 5px;
+    cursor: pointer;
+}
+
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#popup button {
+    display: inline-block; /* ボタンを横に並べる */
+    margin: 5px; /* ボタン間のマージンを追加 */
+    padding: 10px 15px; /* ボタンのパディングを調整 */
+    border: none; /* ボーダーを無しに */
+    border-radius: 5px; /* 角を丸くする */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s; /* アニメーションを追加 */
+}
+
+#popup img {
+    max-width: 100%; /* 画像の幅をポップアップの幅に合わせる */
+    height: auto; /* 高さは自動で調整 */
+    margin-bottom: 10px;
+}
+
+#popup h3 {
+    margin: 10px 0;
+}
+
+#popup p {
+    margin: 5px 0;
+}
+
+/* 戻るボタン */
+#closePopup {
+    background-color: #ff9999;
+    color: white;
+    border-radius: 5px;
+    margin-top: 3%;
+}
+
+#closePopup:hover {
+    background-color: #ff3333;
+}
+
+#closePopup:active {
+    background-color: #ff6666;
+    transform: scale(0.95);
+}
+
+/* 追加ボタン */
+#add {
+    background-color: #66b3ff;
+    color: white;
+    border-radius: 5px;
+}
+
+#add:hover {
+    background-color: #45a2ff;
+}
+
+#add:active {
+    background-color: #45a2ff;
+    transform: scale(0.95);
+}
+
+/* ボタンコンテナ設定 */
+#buttonContainer {
+    display: flex;           
+    justify-content: center; 
+    margin: 20px;           
+}
+
+#buttonContainer button {
+    display: inline-block;   
+    margin: 10px;           
+    padding: 10px;          
+    border: none;           
+    border-radius: 5px;     
+    cursor: pointer;         
+    transition: background-color 0.3s, transform 0.1s    /* ボタンコンテナ内のボタン */
+}
+
+#buttonContainer button:hover {
+    background-color: #b44c4c; /* ホバー時の色 */
+}
+
+#buttonContainer button:active {
+    background-color: #ccc; /* クリック時の色 */
+    transform: scale(0.95); /* クリックしたときにボタンのサイズを縮小 */
+}
+
+/* レスポンシブデザイン */
+
+/* スマートフォン縦 (0-480px) */
+@media (max-width: 480px) {
+    .login-container {
+        width: 90%; /* 幅を90%に */
+        padding: 10px; /* パディングを調整 */
+    }
+
+    h1, h2 {
+        font-size: 1.2em; /* 文字サイズを調整 */
+    }
+
+    button {
+        padding: 12px; /* ボタンのパディングを調整 */
+    }
+}
+
+/* スマートフォン横 (481-670px) */
+@media (min-width: 481px) and (max-width: 670px) {
+    .login-container {
+        width: 80%; /* 幅を80%に */
+        padding: 15px; /* パディングを調整 */
+    }
+
+    h1, h2 {
+        font-size: 1.5em; /* 文字サイズを調整 */
+    }
+}
+
+/* タブレット (671-960px) */
+@media (min-width: 671px) and (max-width: 960px) {
+    .login-container {
+        width: 70%; /* 幅を70%に */
+        padding: 20px; /* パディングを調整 */
+    }
+
+    h1, h2 {
+        font-size: 1.7em; /* 文字サイズを調整 */
+    }
+
+    #popup {
+        width: 90%; /* ポップアップの幅を90%に */
+        max-width: 400px; /* 最大幅を400pxに */
+    }
+}
+
+/* ノートPC (961-1280px) */
+@media (min-width: 961px) and (max-width: 1280px) {
+    .login-container {
+        width: 60%; /* 幅を60%に */
+        padding: 25px; /* パディングを調整 */
+    }
+
+    h1, h2 {
+        font-size: 2em; /* 文字サイズを調整 */
+    }
+
+    #popup {
+        width: 70%; /* ポップアップの幅を70%に */
+        max-width: 450px; /* 最大幅を450pxに */
+    }
+}
+
+/* デスクトップ (1281px以上) */
+@media (min-width: 1281px) {
+    .login-container {
+        width: 400px; /* 固定幅に戻す */
+        padding: 30px; /* パディングを調整 */
+    }
+
+    h1, h2 {
+        font-size: 2.5em; /* 文字サイズを調整 */
+    }
+
+    #popup {
+        width: 400px; /* ポップアップの幅を400pxに */
+    }
+}
