@@ -93,3 +93,6 @@ typings/
 *.njsproj
 *.sln
 *.sw?
+
+#password
+password.txt
