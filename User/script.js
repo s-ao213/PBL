@@ -54,34 +54,70 @@ document.addEventListener('DOMContentLoaded', function() {
 
     checkBusinessHours(); // ページが読み込まれたときに営業状態をチェック
 
-    // ポップアップを表示する関数
+    // mealList.jsonのデータを取得する
+    fetch('mealList.json')
+    .then(response => response.json())
+    .then(mealList => {
+        // 取得したmealListをorder-containerに表示する
+        const orderContainer = document.getElementById('order-container');
+        
+        mealList.forEach(meal => {
+        // 各mealに対してボタン要素を作成する
+        const mealContainer = document.createElement('div'); // ボタンを囲むコンテナ
+        mealContainer.classList.add('meal-item'); // CSSクラスを追加
+
+        const button = document.createElement('button');
+        button.id = meal.id;
+        button.innerHTML = `
+            <img src="${meal.image}" alt="${meal.alt}" width="100%" height="auto">
+            <br>
+            <h4>￥${meal.price}</h4>
+        `;
+        
+        // ボタンがクリックされたらポップアップを開くイベントを追加する
+        button.addEventListener('click', () => {
+            openPopup(meal.alt, meal.image, `￥${meal.price}`, meal.description);
+        });
+        // const addToCartButton = document.createElement
+        // addToCartButton.innerHTML = '追加';
+        // addToCartButton.classList.add('add-to-cart-btn'); // CSSクラスを追加
+        // addToCartButton.addEventListener('click', () => {
+        //     console.log(`商品 ${meal.id} (${meal.alt}) をカートに追加しました`);
+        //     // カートに商品を追加する処理をここに書く
+        // });
+
+        // ボタンをmealContainerに追加する
+        mealContainer.appendChild(button);
+        // mealContainer.appendChild(addToCartButton);
+
+        // order-containerにボタンを追加する
+        orderContainer.appendChild(button);
+        });
+    })
+    .catch(error => console.error('Error loading mealList.json:', error));
+
+    // ポップアップを開く関数
     function openPopup(title, imageUrl, price, description) {
         document.getElementById('popupTitle').textContent = title;
         document.getElementById('popupImage').src = imageUrl;
         document.getElementById('string1').textContent = price;
         document.getElementById('text1').innerHTML = description;
 
+        const addToCartButton = document.getElementById('addToCart');
+        addToCartButton.onclick = () => {
+            console.log(`商品 ${mealId} (${title}) をカートに追加しました`);
+            // カートに商品を追加する処理をここに書く
+        };
+
         // オーバーレイとポップアップを表示
         document.getElementById('overlay').style.display = 'block';
         document.getElementById('popup').style.display = 'block';
     }
 
-    // ボタンのクリックイベントリスナー追加
-    document.getElementById('openPopup1').addEventListener('click', function() {
-        openPopup('牛丼', '牛丼.jpg', '￥430', 'これは牛丼でアレルギー品目は<a href="">アレルギーリストを見て</a>');
-    });
-
-    document.getElementById('openPopup2').addEventListener('click', function() {
-        openPopup('パスタ', 'パスタ.jpg', '￥480', 'これはパスタでアレルギー品目は<a href="">アレルギーリストを見て</a>');
-    });
-
-    document.getElementById('openPopup3').addEventListener('click', function() {
-        openPopup('ポテト', 'ポテト.jpg', '￥400', 'これはポテトでアレルギー品目は<a href="">アレルギーリストを見て</a>');
-    });
-
-    // 戻るボタンにイベントリスナーを追加
-    document.getElementById('closePopup').addEventListener('click', function() {
+    // ポップアップを閉じる（オーバーレイをクリックしたとき）
+    document.getElementById('overlay').addEventListener('click', () => {
         document.getElementById('overlay').style.display = 'none';
         document.getElementById('popup').style.display = 'none';
     });
+
 });

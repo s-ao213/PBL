@@ -155,18 +155,21 @@ button:hover {
 /* ボタンコンテナ設定 */
 #buttonContainer {
     display: flex;           
-    justify-content: center; 
-    margin: 20px;           
+    justify-content: flex-start; /* ボタンを左に寄せる */
+    flex-wrap: wrap; /* 複数段に折り返す */
+    gap: 10px; /* ボタン同士の間隔 */
+    margin: 20px;
 }
 
 #buttonContainer button {
-    display: inline-block;   
-    margin: 10px;           
-    padding: 10px;          
-    border: none;           
-    border-radius: 5px;     
-    cursor: pointer;         
-    transition: background-color 0.3s, transform 0.1s    /* ボタンコンテナ内のボタン */
+    flex: 1 1 auto; /* ボタンのサイズを自動調整 */
+    min-width: 150px; /* ボタンの最小幅 */
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
 }
 
 #buttonContainer button:hover {
