@@ -152,11 +152,11 @@ button:hover {
     transform: scale(0.95);
 }
 
-/* ボタンコンテナ設定 */
+/* ボタンコンテナ設定(商品を押したときに出現するオーバーレイのボタンの設定) */
 #buttonContainer {
     display: flex;           
     justify-content: flex-start; /* ボタンを左に寄せる */
-    flex-wrap: wrap; /* 複数段に折り返す */
+    flex-wrap: wrap; /*複数段に折り返す */
     gap: 10px; /* ボタン同士の間隔 */
     margin: 20px;
 }
@@ -181,6 +181,36 @@ button:hover {
     background-color: #ccc; /* クリック時の色 */
     transform: scale(0.95); /* クリックしたときにボタンのサイズを縮小 */
 }
+
+/* 注文画面に表示される各ボタンの設定 */
+#order-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px;
+    justify-content: space-between;
+}
+
+/* .meal-item {
+    flex: 1 1 calc(33.333% - 20px);
+    min-width: 150px;
+    max-width: 200px;
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.meal-item:hover {
+    background-color: #b44c4c;
+}
+
+.meal-item:active {
+    background-color: #ccc;
+    transform: scale(0.95);
+} */
 
 /* レスポンシブデザイン */
 
