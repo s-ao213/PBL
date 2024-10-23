@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ログインと注文画面</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -33,19 +34,38 @@
 
         <div class="buttonContainer" id="order-page" style="display: none;">
             <h1>注文画面</h1>
+
+            <button id="cartButton" class="fixed-cart-button">
+                <i class="fas fa-shopping-cart"></i> カート (0)
+            </button>
             
             <div id="order-container"></div>
 
             <div id="overlay" style="display:none;">
-            <div id="popup">
-                <h2 id="popupTitle"></h2>
-                <img id="popupImage" src="" alt="" style="width:100%; height:auto;">
-                <p id="string1"></p>
-                <div id="text1"></div>
-                <button id="addToCart">追加</button>
-                <button id="closePopup">閉じる</button>
+
+                <div id="popup">
+                    <div id="popupTitle"></div>
+                    <img id="popupImage" src="" alt="" />
+                    <div id="string1"></div>
+                    <div id="text1"></div>
+                    
+                    <div id="itemQuantity">
+                        <button id="decreaseQuantity" class="quantity-button"><i class="fa-solid fa-minus"></i></button>
+                        <span id="quantityDisplay">1</span>
+                        <button id="increaseQuantity" class="quantity-button"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <button id="addToCart">カートに追加</button>
+                    <button id="closePopup">閉じる</button>
+                </div>
             </div>
+
+            <div id="cart" class="cart hidden">
+                <h2>カートの中身</h2>
+                <ul id="cartItems"></ul>
+                <div id="totalQuantity"></div>
+                <button id="closeCart">閉じる</button>
             </div>
+
         </div>
     </div>
     <script src="script.js"></script>
