@@ -9,13 +9,25 @@
 <body>
     <div class="container">
         <h1>会員登録</h1>
+        <div class="description">
+            <h2>新規登録の説明</h2>
+            <p>新規登録の手続きは、以下の手順で行ってください。</p>
+            <ol>
+                <li><strong>メールアドレス:</strong> 登録したメールアドレスを入力してください。</li>
+                <li><strong>学籍番号:</strong> あなたの学籍番号を入力してください。</li>
+                <li>すべての情報を入力した後、<strong style="color: red;">送信</strong>ボタンをクリックしてください。</li>
+                <li>手続きが完了すると、入力したメールアドレスにパスワード再発行の手続きに関するメールが届きます。</li>
+                <li>メールに記載されている手順に従って、新しいパスワードを設定してください。</li>
+            </ol>
+            <hr> <!-- 説明区分とフォームの区切り -->
+        </div>
         <form id="registration-form">
             <div class="form-group">
                 <label for="name">名前</label>
                 <input type="text" id="name" name="name" required>
             </div>
             <div class="form-group">
-                <label for="student-id">学籍番号</label>
+                <label for="student-id">OMU ID</label>
                 <input type="text" id="student-id" name="student-id" required>
                 <span id="student-id-error" style="color: red; display: none;"></span>
             </div>
