@@ -162,8 +162,9 @@ button:hover {
 }
 
 #buttonContainer button {
-    flex: 1 1 auto; /* ボタンのサイズを自動調整 */
+    flex: 0 1 auto; /* ボタンのサイズを自動調整 */
     min-width: 150px; /* ボタンの最小幅 */
+    max-width: 200px; /* ボタンの最大幅 */
     margin: 10px;
     padding: 10px;
     border: none;

@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const button = document.createElement('button');
         button.id = meal.id;
         button.innerHTML = `
-            <img src="${meal.image}" alt="${meal.alt}" width="100%" height="auto">
+            <img src="${meal.image}" alt="${meal.alt}" width="40%" height="auto">
             <br>
             <h4>￥${meal.price}</h4>
         `;
@@ -80,7 +80,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         // const addToCartButton = document.createElement
         // addToCartButton.innerHTML = '追加';
-        // addToCartButton.classList.add('add-to-cart-btn'); // CSSクラスを追加
+        // addToCartButton.classLi
+        // st.add('add-to-cart-btn'); // CSSクラスを追加
         // addToCartButton.addEventListener('click', () => {
         //     console.log(`商品 ${meal.id} (${meal.alt}) をカートに追加しました`);
         //     // カートに商品を追加する処理をここに書く
