@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const orderPage = document.getElementById('order-page');
     const errorMessage = document.getElementById('error-message');
 
+    // カートを保持する配列
+    let cart = [];
+
     // ログイン処理
     loginForm.addEventListener('submit', function(e) {
         e.preventDefault(); // デフォルトのフォーム送信を防ぐ
@@ -86,22 +89,78 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .catch(error => console.error('Error loading mealList.json:', error));
 
-    // ポップアップを開く関数
-    function openPopup(title, imageUrl, price, description) {
-        document.getElementById('popupTitle').textContent = title;
-        document.getElementById('popupImage').src = imageUrl;
-        document.getElementById('string1').textContent = price;
-        document.getElementById('text1').innerHTML = description;
+    // 個数管理の変数を初期化
+    let quantity = 1; // 個数を管理する変数を初期化
 
-        const addToCartButton = document.getElementById('addToCart');
-        addToCartButton.onclick = () => {
-            console.log(`商品 ${mealId} (${title}) をカートに追加しました`);
-            // カートに商品を追加する処理をここに書く
+// ポップアップを開く関数
+function openPopup(title, imageUrl, price, description) {
+    document.getElementById('popupTitle').textContent = title;
+    document.getElementById('popupImage').src = imageUrl;
+    document.getElementById('string1').textContent = price;
+    document.getElementById('text1').innerHTML = description;
+
+    // 個数の初期化
+    quantity = 1; // 値をリセット
+    document.getElementById('quantityDisplay').textContent = quantity;
+
+    const addToCartButton = document.getElementById('addToCart');
+    addToCartButton.onclick = () => {
+        console.log(`商品 ${title} をカートに追加しました。個数: ${quantity}`);
+        addToCart(title, imageUrl, price, quantity); // カート追加関数を呼び出す
+    };
+
+    // 個数操作ボタンのイベントリスナーを設定
+    document.getElementById('increaseQuantity').onclick = (event) => {
+        event.stopPropagation(); // イベントのバブリングを防ぐ
+        quantity++;
+        document.getElementById('quantityDisplay').textContent = quantity; // 個数を更新
+    };
+
+    document.getElementById('decreaseQuantity').onclick = (event) => {
+        event.stopPropagation(); // イベントのバブリングを防ぐ
+        if (quantity > 1) {
+            quantity--;
+            document.getElementById('quantityDisplay').textContent = quantity; // 個数を更新
+        }
+    };
+
+    // オーバーレイとポップアップを表示
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('popup').style.display = 'block';
+}
+
+// ポップアップを閉じる（オーバーレイをクリックしたとき）
+document.getElementById('overlay').addEventListener('click', () => {
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('popup').style.display = 'none';
+});
+    // カートに商品を追加する関数
+    function addToCart(title, imageUrl, price, quantity) {
+        const cartItem = {
+            title: title,
+            imageUrl: imageUrl,
+            price: price,
+            quantity: quantity
         };
+        cart.push(cartItem); // カートにアイテムを追加
+        updateCartDisplay(); // カートの表示を更新
+    }
 
-        // オーバーレイとポップアップを表示
-        document.getElementById('overlay').style.display = 'block';
-        document.getElementById('popup').style.display = 'block';
+    // カートの内容を表示する関数
+    function updateCartDisplay() {
+        const cartContainer = document.getElementById('cartContainer'); // カートを表示するコンテナ
+        cartContainer.innerHTML = ''; // 現在の内容をクリア
+
+        cart.forEach(item => {
+            const cartItemDiv = document.createElement('div');
+            cartItemDiv.innerHTML = `
+                <img src="${item.imageUrl}" alt="${item.title}" width="50" height="auto">
+                <span>${item.title}</span>
+                <span>￥${item.price}</span>
+                <span>個数: ${item.quantity}</span>
+            `;
+            cartContainer.appendChild(cartItemDiv);
+        });
     }
 
     // ポップアップを閉じる（オーバーレイをクリックしたとき）
@@ -109,5 +168,61 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('overlay').style.display = 'none';
         document.getElementById('popup').style.display = 'none';
     });
+});
 
+document.addEventListener("DOMContentLoaded", () => {
+    const cartButton = document.getElementById("cartButton");
+    const cart = document.getElementById("cart");
+    const closeCartButton = document.getElementById("closeCart");
+    const cartItemsList = document.getElementById("cartItems");
+    const totalQuantityDisplay = document.getElementById("totalQuantity");
+
+    // カートの中身を管理する配列
+    let cartItems = [];
+
+    // カートのアイテムを追加する関数
+    function addToCart(item) {
+        // カートにアイテムが既に存在するかチェック
+        const existingItem = cartItems.find(cartItem => cartItem.name === item.name);
+        if (existingItem) {
+            existingItem.quantity += item.quantity; // 数量を増やす
+        } else {
+            cartItems.push(item); // 新しいアイテムを追加
+        }
+        updateCartDisplay();
+    }
+
+    // カートの表示を更新する関数
+    function updateCartDisplay() {
+        cartItemsList.innerHTML = ""; // リストを初期化
+        let totalQuantity = 0;
+
+        cartItems.forEach(item => {
+            const li = document.createElement("li");
+            li.textContent = `${item.name} - ${item.quantity}個`;
+            cartItemsList.appendChild(li);
+            totalQuantity += item.quantity;
+        });
+
+        totalQuantityDisplay.textContent = `合計商品数: ${totalQuantity}`;
+        cartButton.textContent = `カートを見る (${totalQuantity})`;
+    }
+
+    // カートボタンのクリックイベント
+    cartButton.addEventListener("click", () => {
+        cart.classList.toggle("hidden"); // カートの表示を切り替える
+        updateCartDisplay();
+    });
+
+    closeCartButton.addEventListener("click", () => {
+        cart.classList.add("hidden"); // カートを非表示
+    });
+
+    // ここで追加ボタンにイベントリスナーを設定
+    document.getElementById("addToCart").addEventListener("click", () => {
+        const itemName = document.getElementById("popupTitle").textContent; // 例としてポップアップタイトルを商品名とする
+        const quantity = parseInt(document.getElementById("quantityDisplay").textContent); // ポップアップで指定された数量
+        addToCart({ name: itemName, quantity: quantity }); // アイテムをカートに追加
+        document.getElementById("overlay").style.display = "none"; // ポップアップを閉じる
+    });
 });
