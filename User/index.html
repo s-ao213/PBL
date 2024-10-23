@@ -31,38 +31,20 @@
             <div id="businessHours" class="business-hours"></div>
         </div>
 
-        <div class="order-container" id="order-page" style="display: none;">
+        <div class="buttonContainer" id="order-page" style="display: none;">
             <h1>注文画面</h1>
             
-            <div id="buttonContainer">
-                <button id="openPopup1">
-                    <img src="牛丼.jpg" alt="牛丼サンプル" width="40%" height="auto">
-                    <br>
-                    <h4>￥430</h4>
-                </button>
-                
-                <button id="openPopup2">
-                    <img src="パスタ.jpg" alt="パスタサンプル" width="40%" height="auto">
-                    <br>
-                    <h4>￥480</h4>
-                </button>
-            
-                <button id="openPopup3">
-                    <img src="ポテト.jpg" alt="ポテトサンプル" width="40%" height="auto">
-                    <br>
-                    <h4>￥400</h4>
-                </button>
+            <div id="order-container"></div>
+
+            <div id="overlay" style="display:none;">
+            <div id="popup">
+                <h2 id="popupTitle"></h2>
+                <img id="popupImage" src="" alt="" style="width:100%; height:auto;">
+                <p id="string1"></p>
+                <div id="text1"></div>
+                <button id="addToCart">追加</button>
+                <button id="closePopup">閉じる</button>
             </div>
-            
-            <div id="overlay"></div>
-            <div id="popup" style="display: none;">
-                <img src="牛丼.jpg" alt="ポップアップ画像" id="popupImage"> 
-                <h3 id="popupTitle">牛丼</h3> 
-                <p id="string1">￥430</p> 
-                <p id="text1">これは牛丼でアレルギー品目は<a href="">アレルギーリストを見て</a></p> 
-                <button id="add">追加</button>
-                <br>
-                <button id="closePopup">戻る</button>
             </div>
         </div>
     </div>
