@@ -233,7 +233,7 @@ button:hover {
 
 /* カートウィンドウのスタイル */
 .fixed-cart-button {
-    width: 30%;
+    width: 20%;
     height: 10%;
     position: fixed; /* 固定位置 */
     top: 10px; /* 上から10px */
@@ -253,6 +253,11 @@ button:hover {
     background-color: #2980b9; /* ホバー時の色 */
 }
 
+/* .section{
+    margin-left: 3%;
+    margin-right: ;
+} */
+
 .cart {
     position: fixed;
     top: 0;  /* 画面のトップに配置 */
@@ -265,9 +270,9 @@ button:hover {
     display: flex;
     flex-direction: column;
     justify-content: center; /* 中央揃え */
-    align-items: center; /* 中央揃え */
     z-index: 1000;
-    padding: 20px; /* 内側の余白 */
+    padding-left: 10%;
+    padding-right: 10%;
     box-sizing: border-box; /* パディングとボーダーを幅に含める */
 }
 
@@ -333,7 +338,9 @@ button:hover {
     margin-bottom: 20px; /* 下部余白 */
 }
 
+
 #closeCart {
+    width: 20%;
     background-color: #e74c3c; /* ボタンの色を赤に */
     color: white; /* テキストを白に */
     border: none; /* ストロークを削除 */
@@ -406,7 +413,7 @@ button:hover {
     }
 
     .cart h2, .cart #totalQuantity {
-        font-size: 2.2em; /* 文字サイズを調整 */
+        font-size: 1.8em; /* 文字サイズを調整 */
     }
 
     #cartItems {
