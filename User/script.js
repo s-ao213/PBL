@@ -1,5 +1,3 @@
-
-
 // DOMコンテンツが全て読み込まれた後に実行
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login-form');
