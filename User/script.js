@@ -1,3 +1,5 @@
+
+
 // DOMコンテンツが全て読み込まれた後に実行
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login-form');
@@ -143,24 +145,6 @@ document.getElementById('overlay').addEventListener('click', () => {
             quantity: quantity
         };
         cart.push(cartItem); // カートにアイテムを追加
-        updateCartDisplay(); // カートの表示を更新
-    }
-
-    // カートの内容を表示する関数
-    function updateCartDisplay() {
-        const cartContainer = document.getElementById('cartContainer'); // カートを表示するコンテナ
-        cartContainer.innerHTML = ''; // 現在の内容をクリア
-
-        cart.forEach(item => {
-            const cartItemDiv = document.createElement('div');
-            cartItemDiv.innerHTML = `
-                <img src="${item.imageUrl}" alt="${item.title}" width="50" height="auto">
-                <span>${item.title}</span>
-                <span>￥${item.price}</span>
-                <span>個数: ${item.quantity}</span>
-            `;
-            cartContainer.appendChild(cartItemDiv);
-        });
     }
 
     // ポップアップを閉じる（オーバーレイをクリックしたとき）
@@ -191,11 +175,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         updateCartDisplay();
     }
-
+    
     // カートの表示を更新する関数
     function updateCartDisplay() {
         cartItemsList.innerHTML = ""; // リストを初期化
         let totalQuantity = 0;
+
 
         cartItems.forEach(item => {
             const li = document.createElement("li");
@@ -204,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
             totalQuantity += item.quantity;
         });
 
-        totalQuantityDisplay.textContent = `合計商品数: ${totalQuantity}`;
+        totalQuantityDisplay.textContent = `合計注文数: ${totalQuantity}個`;
         cartButton.textContent = `カートを見る (${totalQuantity})`;
     }
 
