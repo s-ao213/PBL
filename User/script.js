@@ -80,9 +80,19 @@ document.addEventListener('DOMContentLoaded', function() {
             button.addEventListener('click', () => {
                 openPopup(meal.alt, meal.image, `￥${meal.price}`, meal.description);
             });
+
+            // 1つだけ追加するボタンを作成
+            const quickAddButton = document.createElement('button');
+            quickAddButton.textContent = '1つカートに追加する';
+            quickAddButton.classList.add('quick-add-button');
+            
+            quickAddButton.addEventListener('click', () => {
+                quickAddToCart(meal.alt, meal.image, `￥${meal.price}`);
+            });
         
             // ボタンをmealContainerに追加する
             mealContainer.appendChild(button);
+            mealContainer.appendChild(quickAddButton);
             // order-containerにmealContainerを追加する
             orderContainer.appendChild(mealContainer);
         });
@@ -143,6 +153,12 @@ document.getElementById('overlay').addEventListener('click', () => {
             quantity: quantity
         };
         cart.push(cartItem); // カートにアイテムを追加
+    }
+
+    // カートに1つだけ追加する関数
+    function quickAddToCart(title, imageUrl, price) {
+        addToCart(title, imageUrl, price, 1);
+        console.log(`商品 ${title} をカートに追加しました。個数: 1`);
     }
 
     // ポップアップを閉じる（オーバーレイをクリックしたとき）
