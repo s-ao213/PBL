@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
             mealContainer.classList.add('meal-item'); // CSSクラスを追加
             
             const button = document.createElement('button');
-            button.id = meal.id;
+            button.id = meal._id;
             button.innerHTML = `
                 <img src="${meal.image}" alt="${meal.alt}" width="40%" height="auto">
                 <br>
@@ -168,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeCartButton = document.getElementById("closeCart");
     const cartItemsList = document.getElementById("cartItems");
     const totalQuantityDisplay = document.getElementById("totalQuantity");
+    const totalPriceDisplay = document.getElementById("totalPrice");
 
     // カートの中身を管理する配列
     let cartItems = [];
@@ -188,16 +189,18 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateCartDisplay() {
         cartItemsList.innerHTML = ""; // リストを初期化
         let totalQuantity = 0;
-
+        let totalPrice = 0;
 
         cartItems.forEach(item => {
             const li = document.createElement("li");
-            li.textContent = `${item.name} - ${item.quantity}個`;
+            li.textContent = `${item.name} - ${item.quantity}個 - 計￥${item.price * item.quantity}`;
             cartItemsList.appendChild(li);
             totalQuantity += item.quantity;
+            totalPrice += item.price * item.quantity;
         });
 
         totalQuantityDisplay.textContent = `合計注文数: ${totalQuantity}個`;
+        totalPriceDisplay.textContent = `合計金額: ${totalPrice}円`;
         cartButton.textContent = `カートを見る (${totalQuantity})`;
     }
 

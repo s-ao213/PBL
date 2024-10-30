@@ -253,29 +253,6 @@ button:hover {
     background-color: #2980b9; /* ホバー時の色 */
 }
 
-/* 決済ボタン */
-.fixed-account-button{
-    width: 20%;
-    height: 10%;
-    position: fixed; /* 固定位置 */
-    bottom: 10px; /* 下から10px */
-    left: 10px; /* 左から10px */
-    background-color: yellow; /* ボタンの背景色 */
-    color: black; /* ボタンのテキスト色 */
-    border: none;
-    padding: 3px 10px; /* 内側のパディングを小さく */
-    border-radius: 5px;
-    font-size: 0.8em; /* フォントサイズを小さく */
-    cursor: pointer;
-    z-index: 1000; /* 他の要素の上に表示 */
-    transition: background-color 0.3s; /* ホバー時のアニメーション */
-}
-
-.fixed-account-button:hover {
-    background-color: #ce9b0e; /* ホバー時の色 */
-    color: white;
-}
-
 /* .section{
     margin-left: 3%;
     margin-right: ;
