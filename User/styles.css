@@ -446,3 +446,18 @@ button:hover {
         width: 400px; /* ポップアップの幅を400pxに */
     }
 }
+
+#submitOrder {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 0;
+    width: 100%;
+}
+
+#submitOrder:hover {
+    background-color: #45a049;
+}

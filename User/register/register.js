@@ -82,23 +82,52 @@ emailInput.addEventListener('input', function() {
 });
 
 // 登録ボタンがクリックされたときの動作
-submitBtn.addEventListener('click', function(event) {
-    event.preventDefault(); // 送信をキャンセル
+submitBtn.addEventListener('click', async function(event) {
+    event.preventDefault();
     let valid = checkInputs();
     
-    // ここでボタンの有効無効をチェックした後に処理
     if (!valid) {
-        globalError.style.display = 'block'; // エラーメッセージを表示
+        globalError.style.display = 'block';
     } else {
-        globalError.style.display = 'none'; // 有効であればメッセージを非表示
-        // フォームを隠す
-        form.style.display = 'none';
-        // ホームの要素を表示
-        document.getElementById('home-screen').style.display = 'block';
+        globalError.style.display = 'none';
+        
+        try {
+            const userData = {
+                studentId: document.getElementById('student-id').value,
+                name: document.getElementById('name').value,
+                grade: document.getElementById('grade').value.toString(), // 文字列に変換
+                class: document.getElementById('class').value.toString(), // 文字列に変換
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            };
+
+            const response = await fetch('http://localhost:3000/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                form.style.display = 'none';
+                document.getElementById('home-screen').style.display = 'block';
+            } else {
+                globalError.textContent = '登録に失敗しました。もう一度お試しください。';
+                globalError.style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            globalError.textContent = '登録に失敗しました。もう一度お試しください。';
+            globalError.style.display = 'block';
+        }
     }
 });
 
-// 各フィールドの検証を行う関数
+// 全ての入力が埋まっているか確認
 function checkInputs() {
     let allFilled = true;
 
@@ -109,16 +138,16 @@ function checkInputs() {
         }
     });
 
-    // 学年とクラスが選択されていることも確認
+    // 学年とクラスが選択されていることを確認
     const gradeSelected = gradeSelect.value.trim() !== '';
     const classSelected = classSelect.value.trim() !== '';
 
-    // 各フィールドの有効性を確認
+    // 学籍番号、電話番号、メールアドレスのバリデーション(要変更)
     const studentIdValid = /^[a-zA-Z0-9]+$/.test(studentIdInput.value.trim());
     const phoneValid = /^\d+$/.test(phoneInput.value.trim());
     const emailValid = /^[a-zA-Z0-9@.]+$/.test(emailInput.value.trim());
 
-    // パスワードの有効性を再チェック
+    // パスワードのバリデーション
     const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/;
     const passwordValid = passwordPattern.test(passwordInput.value);
     const confirmPasswordValid = passwordInput.value === confirmPasswordInput.value;
@@ -142,7 +171,7 @@ function checkInputs() {
 // ページが更新される前にアラートを表示する処理
 window.addEventListener('beforeunload', function(event) {
     const confirmationMessage = '画面を更新すると、今までの入力内容が消えます。';
-    event.returnValue = confirmationMessage; // クロスブラウザ互換性のため
+    event.returnValue = confirmationMessage; // Chrome 用
     return confirmationMessage; // Firefox 用
 });
 

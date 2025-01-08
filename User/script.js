@@ -1,4 +1,3 @@
-// DOMコンテンツが全て読み込まれた後に実行
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login-form');
     const loginContainer = document.getElementById('login-container');
@@ -9,64 +8,63 @@ document.addEventListener('DOMContentLoaded', function() {
     let cart = [];
 
     // ログイン処理
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // デフォルトのフォーム送信を防ぐ
+    loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
 
         const studentId = document.getElementById('student-id').value;
         const password = document.getElementById('password').value;
 
-        // 簡易的な認証チェック
-        if (studentId === '123' && password === '456') {
-            // 認証成功
-            loginContainer.style.display = 'none';
-            orderPage.style.display = 'block';
-            errorMessage.textContent = ''; // エラーメッセージをクリア
-        } else {
-            // 認証失敗
-            errorMessage.textContent = '学籍番号またはパスワードが無効です';
+        try {
+            const response = await fetch('http://localhost:3000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ studentId, password })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                // ユーザー情報をセッションストレージに保存
+                sessionStorage.setItem('userId', result.user.id);
+                sessionStorage.setItem('studentId', result.user.studentId);
+                sessionStorage.setItem('userName', result.user.name);
+
+                loginContainer.style.display = 'none';
+                orderPage.style.display = 'block';
+                errorMessage.textContent = '';
+                
+                // メニューを読み込む
+                loadMenu();
+            } else {
+                errorMessage.textContent = '学籍番号またはパスワードが無効です';
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            errorMessage.textContent = 'ログインに失敗しました。もう一度お試しください。';
         }
     });
 
-    // 営業時間確認処理
-    function checkBusinessHours() {
-        const now = new Date();
-        const day = now.getDay(); // 0: 日曜日, 1: 月曜日, ..., 6: 土曜日
-        const hour = now.getHours();
-
-        let statusText = '';
-        const openHours = '平日 9:00 - 14:00';
-
-        if (day >= 1 && day <= 5) { // 月曜日から金曜日
-            if (hour >= 9 && hour < 14) {
-                statusText = `現在営業中です - ${openHours}`;
-                document.getElementById('businessHours').className = 'business-hours open';
-            } else {
-                const nextOpen = hour < 9 ? '次の営業日は今日の9:00です。' : '次の営業日は明日の9:00です。';
-                statusText = `現在営業時間外です - ${nextOpen}`;
-                document.getElementById('businessHours').className = 'business-hours closed';
-            }
-        } else {
-            // 土日祝は閉店
-            const nextOpen = '次の営業日は月曜日の9:00です。';
-            statusText = `現在営業時間外です - ${nextOpen}`;
-            document.getElementById('businessHours').className = 'business-hours closed';
+    // メニュー読み込み
+    async function loadMenu() {
+        try {
+            const response = await fetch('mealList.json');
+            const mealList = await response.json();
+            displayMenu(mealList);
+        } catch (error) {
+            console.error('Error loading menu:', error);
         }
-
-        document.getElementById('businessHours').textContent = statusText;
     }
 
-    checkBusinessHours(); // ページが読み込まれたときに営業状態をチェック
-
-    // mealList.jsonのデータを取得する
-    fetch('mealList.json')
-    .then(response => response.json())
-    .then(mealList => {
-        // 取得したmealListをorder-containerに表示する
+    // メニュー表示
+    function displayMenu(mealList) {
         const orderContainer = document.getElementById('order-container');
+        orderContainer.innerHTML = '';
         
         mealList.forEach(meal => {
-            const mealContainer = document.createElement('div'); // ボタンを囲むコンテナ
-            mealContainer.classList.add('meal-item'); // CSSクラスを追加
+            const mealContainer = document.createElement('div');
+            mealContainer.classList.add('meal-item');
             
             const button = document.createElement('button');
             button.id = meal._id;
@@ -76,149 +74,223 @@ document.addEventListener('DOMContentLoaded', function() {
                 <h4>￥${meal.price}</h4>
             `;
             
-            // ボタンがクリックされたらポップアップを開くイベントを追加する
             button.addEventListener('click', () => {
-                openPopup(meal.alt, meal.image, `￥${meal.price}`, meal.description);
+                openPopup(meal);
             });
 
-            // 1つだけ追加するボタンを作成
             const quickAddButton = document.createElement('button');
             quickAddButton.textContent = '1つカートに追加する';
             quickAddButton.classList.add('quick-add-button');
             
             quickAddButton.addEventListener('click', () => {
-                addToCart(meal.alt, meal.image, meal.price, 1);
+                addToCart(meal, 1);
+                updateCartDisplay();
             });
         
-            // ボタンをmealContainerに追加する
             mealContainer.appendChild(button);
             mealContainer.appendChild(quickAddButton);
-            // order-containerにmealContainerを追加する
             orderContainer.appendChild(mealContainer);
         });
-    })
-    .catch(error => console.error('Error loading mealList.json:', error));
-
-    // 個数管理の変数を初期化
-    let quantity = 1; // 個数を管理する変数を初期化
-
-// ポップアップを開く関数
-function openPopup(title, imageUrl, price, description) {
-    document.getElementById('popupTitle').textContent = title;
-    document.getElementById('popupImage').src = imageUrl;
-    document.getElementById('string1').textContent = price;
-    document.getElementById('text1').innerHTML = description;
-
-    // 個数の初期化
-    quantity = 1; // 値をリセット
-    document.getElementById('quantityDisplay').textContent = quantity;
-
-    const addToCartButton = document.getElementById('addToCart');
-    addToCartButton.onclick = () => {
-        console.log(`商品 ${title} をカートに追加しました。個数: ${quantity}`);
-        addToCart(title, imageUrl, price, quantity); // カート追加関数を呼び出す
-    };
-
-    // 個数操作ボタンのイベントリスナーを設定
-    document.getElementById('increaseQuantity').onclick = (event) => {
-        event.stopPropagation(); // イベントのバブリングを防ぐ
-        quantity++;
-        document.getElementById('quantityDisplay').textContent = quantity; // 個数を更新
-    };
-
-    document.getElementById('decreaseQuantity').onclick = (event) => {
-        event.stopPropagation(); // イベントのバブリングを防ぐ
-        if (quantity > 1) {
-            quantity--;
-            document.getElementById('quantityDisplay').textContent = quantity; // 個数を更新
-        }
-    };
-
-    // オーバーレイとポップアップを表示
-    document.getElementById('overlay').style.display = 'block';
-    document.getElementById('popup').style.display = 'block';
-}
-
-// ポップアップを閉じる（オーバーレイをクリックしたとき）
-document.getElementById('overlay').addEventListener('click', () => {
-    document.getElementById('overlay').style.display = 'none';
-    document.getElementById('popup').style.display = 'none';
-});
-    // カートに商品を追加する関数
-    function addToCart(title, imageUrl, price, quantity) {
-        const cartItem = {
-            title: title,
-            imageUrl: imageUrl,
-            price: price,
-            quantity: quantity
-        };
-        cart.push(cartItem); // カートにアイテムを追加
     }
 
-    // ポップアップを閉じる（オーバーレイをクリックしたとき）
-    document.getElementById('overlay').addEventListener('click', () => {
-        document.getElementById('overlay').style.display = 'none';
-        document.getElementById('popup').style.display = 'none';
-    });
-});
+    // ポップアップを開く
+    function openPopup(meal) {
+        document.getElementById('popupTitle').textContent = meal.alt;
+        document.getElementById('popupImage').src = meal.image;
+        document.getElementById('string1').textContent = `￥${meal.price}`;
+        document.getElementById('text1').innerHTML = meal.description;
 
-document.addEventListener("DOMContentLoaded", () => {
-    const cartButton = document.getElementById("cartButton");
-    const cart = document.getElementById("cart");
-    const closeCartButton = document.getElementById("closeCart");
-    const cartItemsList = document.getElementById("cartItems");
-    const totalQuantityDisplay = document.getElementById("totalQuantity");
-    const totalPriceDisplay = document.getElementById("totalPrice");
+        let quantity = 1;
+        document.getElementById('quantityDisplay').textContent = quantity;
 
-    // カートの中身を管理する配列
-    let cartItems = [];
+        const addToCartButton = document.getElementById('addToCart');
+        addToCartButton.onclick = () => {
+            addToCart(meal, quantity);
+            document.getElementById('overlay').style.display = 'none';
+            updateCartDisplay();
+        };
 
-    // カートのアイテムを追加する関数
-    function addToCart(item) {
-        // カートにアイテムが既に存在するかチェック
-        const existingItem = cartItems.find(cartItem => cartItem.name === item.name);
+        document.getElementById('increaseQuantity').onclick = (event) => {
+            event.stopPropagation();
+            quantity++;
+            document.getElementById('quantityDisplay').textContent = quantity;
+        };
+
+        document.getElementById('decreaseQuantity').onclick = (event) => {
+            event.stopPropagation();
+            if (quantity > 1) {
+                quantity--;
+                document.getElementById('quantityDisplay').textContent = quantity;
+            }
+        };
+
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    // カートに商品を追加
+    function addToCart(meal, quantity) {
+        const existingItem = cart.find(item => item.id === meal._id);
+        
         if (existingItem) {
-            existingItem.quantity += item.quantity; // 数量を増やす
+            existingItem.quantity += quantity;
         } else {
-            cartItems.push(item); // 新しいアイテムを追加
+            cart.push({
+                id: meal._id,
+                name: meal.alt,
+                price: meal.price,
+                quantity: quantity
+            });
         }
         updateCartDisplay();
     }
-    
-    // カートの表示を更新する関数
-    function updateCartDisplay() {
-        cartItemsList.innerHTML = ""; // リストを初期化
-        let totalQuantity = 0;
-        let totalPrice = 0;
 
-        cartItems.forEach(item => {
-            const li = document.createElement("li");
-            li.textContent = `${item.name} - ${item.quantity}個 - 計￥${item.price * item.quantity}`;
-            cartItemsList.appendChild(li);
+    // カート表示を更新
+    function updateCartDisplay() {
+        const cartItems = document.getElementById('cartItems');
+        const totalQuantityDisplay = document.getElementById('totalQuantity');
+        cartItems.innerHTML = '';
+        
+        let totalQuantity = 0;
+        let totalAmount = 0;
+
+        cart.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.name} - ${item.quantity}個 - ￥${item.price * item.quantity}`;
+            
+            // 削除ボタンを追加
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = '削除';
+            deleteButton.classList.add('delete-item-button');
+            deleteButton.onclick = () => removeFromCart(item.id);
+            li.appendChild(deleteButton);
+            
+            cartItems.appendChild(li);
             totalQuantity += item.quantity;
-            totalPrice += item.price * item.quantity;
+            totalAmount += item.price * item.quantity;
         });
 
-        totalQuantityDisplay.textContent = `合計注文数: ${totalQuantity}個`;
-        totalPriceDisplay.textContent = `合計金額: ${totalPrice}円`;
-        cartButton.textContent = `カートを見る (${totalQuantity})`;
+        totalQuantityDisplay.textContent = `合計: ￥${totalAmount} (${totalQuantity}個)`;
+        document.getElementById('cartButton').textContent = `カート (${totalQuantity})`;
     }
 
-    // カートボタンのクリックイベント
-    cartButton.addEventListener("click", () => {
-        cart.classList.toggle("hidden"); // カートの表示を切り替える
+    // カートから商品を削除
+    function removeFromCart(itemId) {
+        cart = cart.filter(item => item.id !== itemId);
         updateCartDisplay();
+    }
+
+    // 注文確定処理
+    async function submitOrder() {
+        if (cart.length === 0) {
+            alert('カートが空です');
+            return;
+        }
+
+        try {
+            const userId = sessionStorage.getItem('userId');
+            if (!userId) {
+                alert('セッションが切れました。再度ログインしてください。');
+                location.reload();
+                return;
+            }
+
+            const response = await fetch('http://localhost:3000/api/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    items: cart,
+                    totalAmount: calculateTotalAmount()
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert('注文が完了しました！');
+                cart = [];
+                updateCartDisplay();
+                document.getElementById('cart').classList.add('hidden');
+            } else {
+                alert('注文に失敗しました。もう一度お試しください。');
+            }
+        } catch (error) {
+            console.error('Order submission error:', error);
+            alert('注文に失敗しました。もう一度お試しください。');
+        }
+    }
+
+    // 合計金額計算
+    function calculateTotalAmount() {
+        return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    }
+
+    // カートボタンのイベントリスナー
+    document.getElementById('cartButton').addEventListener('click', () => {
+        document.getElementById('cart').classList.toggle('hidden');
     });
 
-    closeCartButton.addEventListener("click", () => {
-        cart.classList.add("hidden"); // カートを非表示
+    // カートを閉じるボタンのイベントリスナー
+    document.getElementById('closeCart').addEventListener('click', () => {
+        document.getElementById('cart').classList.add('hidden');
     });
 
-    // ここで追加ボタンにイベントリスナーを設定
-    document.getElementById("addToCart").addEventListener("click", () => {
-        const itemName = document.getElementById("popupTitle").textContent; // 例としてポップアップタイトルを商品名とする
-        const quantity = parseInt(document.getElementById("quantityDisplay").textContent); // ポップアップで指定された数量
-        addToCart({ name: itemName, quantity: quantity }); // アイテムをカートに追加
-        document.getElementById("overlay").style.display = "none"; // ポップアップを閉じる
+    // 注文確定ボタンのイベントリスナー
+    document.getElementById('submitOrder').addEventListener('click', submitOrder);
+
+    // ポップアップを閉じる
+    document.getElementById('overlay').addEventListener('click', (e) => {
+        if (e.target.id === 'overlay' || e.target.id === 'closePopup') {
+            document.getElementById('overlay').style.display = 'none';
+        }
     });
+
+    // 営業時間チェック
+    function checkBusinessHours() {
+        const now = new Date();
+        const day = now.getDay();
+        const hour = now.getHours();
+
+        let statusText = '';
+        const openHours = '平日 9:00 - 14:00';
+
+        if (day >= 1 && day <= 5) {
+            if (hour >= 9 && hour < 14) {
+                statusText = `現在営業中です - ${openHours}`;
+                document.getElementById('businessHours').className = 'business-hours open';
+                enableOrdering(true);
+            } else {
+                const nextOpen = hour < 9 ? '次の営業日は今日の9:00です。' : '次の営業日は明日の9:00です。';
+                statusText = `現在営業時間外です - ${nextOpen}`;
+                document.getElementById('businessHours').className = 'business-hours closed';
+                enableOrdering(false);
+            }
+        } else {
+            const nextOpen = '次の営業日は月曜日の9:00です。';
+            statusText = `現在営業時間外です - ${nextOpen}`;
+            document.getElementById('businessHours').className = 'business-hours closed';
+            enableOrdering(false);
+        }
+
+        document.getElementById('businessHours').textContent = statusText;
+    }
+
+    // 注文の有効/無効を切り替える
+    function enableOrdering(enable) {
+        const buttons = document.querySelectorAll('.meal-item button, #addToCart, #submitOrder');
+        buttons.forEach(button => {
+            button.disabled = !enable;
+            if (!enable) {
+                button.title = '営業時間外です';
+            } else {
+                button.title = '';
+            }
+        });
+    }
+
+    // 初期化時の処理
+    checkBusinessHours();
+    setInterval(checkBusinessHours, 60000); // 1分ごとに更新
 });
