@@ -198,6 +198,13 @@ button:hover {
     margin-bottom: 20px; /* 各項目の下にマージン */
 }
 
+/* スマホ画面で2列表示にする */
+@media (max-width: 600px) {
+    .meal-item {
+        flex: 1 1 calc(50% - 10px); /* 2列表示; 幅を設定し、隙間分を引く */
+    }
+}
+
 .meal-item button {
     width: 100%; /* ボタンがコンテナの幅に合わせる */
 }
