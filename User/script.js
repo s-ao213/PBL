@@ -70,10 +70,10 @@ document.addEventListener('DOMContentLoaded', function() {
             button.id = meal.id;  // _idではなくidを使用
             const altText = meal.alt.replace('サンプル', '') // 「サンプル」を削除
             button.innerHTML = `
-                <h3>${altText}</h3>
+                <h3 style='font-size: 1.5em;'>${altText}</h3>
                 <img src="${meal.image}" alt="${meal.alt}" width="100%" height="auto">
                 <br>
-                <h4>￥${meal.price}</h4>
+                <h4 style='font-size: 1.5em;'>￥${meal.price}</h4>
             `;
             
             button.addEventListener('click', () => {
