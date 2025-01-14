@@ -67,9 +67,11 @@ document.addEventListener('DOMContentLoaded', function() {
             mealContainer.classList.add('meal-item');
             
             const button = document.createElement('button');
-            button.id = meal._id;
+            button.id = meal.id;  // _idではなくidを使用
+            const altText = meal.alt.replace('サンプル', '') // 「サンプル」を削除
             button.innerHTML = `
-                <img src="${meal.image}" alt="${meal.alt}" width="40%" height="auto">
+                <h3>${altText}</h3>
+                <img src="${meal.image}" alt="${meal.alt}" width="100%" height="auto">
                 <br>
                 <h4>￥${meal.price}</h4>
             `;
@@ -79,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             const quickAddButton = document.createElement('button');
-            quickAddButton.textContent = '1つカートに追加する';
+            quickAddButton.textContent = '1つカートに追加';
             quickAddButton.classList.add('quick-add-button');
             
             quickAddButton.addEventListener('click', () => {
