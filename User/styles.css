@@ -243,7 +243,7 @@ button:hover {
     width: 20%;
     height: 10%;
     position: fixed; /* 固定位置 */
-    top: 10px; /* 上から10px */
+    bottom: 10px; /* 下から10px */
     right: 10px; /* 右から10px */
     background-color: #3498db; /* ボタンの背景色 */
     color: white; /* ボタンのテキスト色 */
