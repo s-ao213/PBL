@@ -14,6 +14,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const studentId = document.getElementById('student-id').value;
         const password = document.getElementById('password').value;
 
+        // テスト用アカウントの場合
+        if (studentId === '123' && password === '456') {
+            loginContainer.style.display = 'none';
+            orderPage.style.display = 'block';
+            errorMessage.textContent = '';
+            loadMenu();
+            return;
+        }
+
         try {
             const response = await fetch('http://localhost:3000/api/login', {
                 method: 'POST',
