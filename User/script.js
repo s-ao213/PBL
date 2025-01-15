@@ -105,12 +105,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // アレルゲン情報を設定する関数
+    function setAllergenInfo(allergens) {
+        const allergiesElement = document.getElementById('allergies');
+        allergiesElement.textContent = `${allergens.join(', ')}`;
+    }
+
     // ポップアップを開く
     function openPopup(meal) {
         document.getElementById('popupTitle').textContent = meal.alt;
         document.getElementById('popupImage').src = meal.image;
         document.getElementById('string1').textContent = `￥${meal.price}`;
         document.getElementById('text1').innerHTML = meal.description;
+        // document.getElementById('allergies').textContent = setAllergenInfo(meal.allergies);
 
         let quantity = 1;
         document.getElementById('quantityDisplay').textContent = quantity;
