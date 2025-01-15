@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('quantityDisplay').textContent = quantity;
             }
         };
-
+        document.getElementById('popup').style.display = 'block';  // この行を追加
         document.getElementById('overlay').style.display = 'block';
     }
 
